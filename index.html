@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aya Mae Alpez - Scrapbook Portfolio</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Patrick+Hand&family=Special+Elite&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Font utility classes */
+        .font-handwriting { font-family: 'Caveat', cursive; }
+        .font-handwriting-clean { font-family: 'Patrick Hand', cursive; }
+        .font-typewriter { font-family: 'Special Elite', 'Courier Prime', monospace; }
+        .font-sans-clean { font-family: 'Inter', sans-serif; }
+
+        /* Custom Paper Background Patterns */
+        .bg-kraft {
+            background-color: #d7c4a7;
+            background-image: radial-gradient(#bc9c72 0.75px, transparent 0.75px), radial-gradient(#bc9c72 0.75px, #d7c4a7 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+
+        .bg-graph-paper {
+            background-color: #f8f6f0;
+            background-image: linear-gradient(#e2ddd0 1.5px, transparent 1.5px), linear-gradient(90deg, #e2ddd0 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+        }
+
+        .bg-corkboard {
+            background-color: #cb9b60;
+            background-image: radial-gradient(#a37237 1px, transparent 1px), radial-gradient(#a37237 1px, #cb9b60 1px);
+            background-size: 16px 16px;
+            background-position: 0 0, 8px 8px;
+        }
+
+        .bg-dark-blueprint {
+            background-color: #1a2b4c;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: #f0f4f8;
+        }
+
+        /* Torn Edge Effects */
+        .torn-edge-bottom {
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), 98% 100%, 95% calc(100% - 8px), 92% 100%, 88% calc(100% - 10px), 84% 100%, 80% calc(100% - 6px), 75% 100%, 70% calc(100% - 12px), 65% 100%, 60% calc(100% - 8px), 55% 100%, 50% calc(100% - 10px), 45% 100%, 40% calc(100% - 6px), 35% 100%, 30% calc(100% - 12px), 25% 100%, 20% calc(100% - 8px), 15% 100%, 10% calc(100% - 10px), 5% 100%, 0 calc(100% - 8px));
+        }
+
+        /* Washi Tape Effect */
+        .washi-tape {
+            background-color: rgba(243, 233, 192, 0.85);
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(212, 172, 13, 0.2) 10px, rgba(212, 172, 13, 0.2) 20px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            backdrop-filter: blur(1px);
+        }
+
+        .washi-tape-pink {
+            background-color: rgba(255, 204, 213, 0.85);
+            background-image: repeating-linear-gradient(-45deg, transparent, transparent 8px, rgba(230, 100, 120, 0.2) 8px, rgba(230, 100, 120, 0.2) 16px);
+        }
+
+        .washi-tape-mint {
+            background-color: rgba(200, 240, 220, 0.85);
+            background-image: radial-gradient(rgba(40, 160, 100, 0.3) 2px, transparent 2px);
+            background-size: 8px 8px;
+        }
+
+        /* Coffee Ring Stain */
+        .coffee-stain {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 8px solid rgba(139, 90, 43, 0.15);
+            box-shadow: inset 0 0 12px rgba(139, 90, 43, 0.2), 0 0 8px rgba(139, 90, 43, 0.1);
+            filter: blur(1px);
+        }
+
+        /* Shadow Effects */
+        .paper-shadow {
+            box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .polaroid-shadow {
+            box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.18), -1px 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e6dfd3;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #b59f84;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8c7355;
+        }
+
+        /* Draggable Sticker Canvas Layer */
+        #sticker-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 40;
+        }
+        .placed-sticker {
+            position: absolute;
+            pointer-events: auto;
+            cursor: move;
+            user-select: none;
+            transition: transform 0.1s ease;
+        }
+        .placed-sticker:hover {
+            transform: scale(1.1) rotate(3deg);
+        }
+
+        /* Binder Ring Animation */
+        .binder-ring {
+            width: 18px;
+            height: 36px;
+            background: linear-gradient(90deg, #888, #fff 40%, #ccc 70%, #555);
+            border-radius: 10px;
+            box-shadow: 2px 4px 6px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body id="body-root" class="bg-graph-paper text-slate-800 font-sans-clean transition-colors duration-500 min-h-screen relative overflow-x-hidden">
+
+    <div id="sticker-canvas"></div>
+
+    <aside aria-label="Controls and theme selection" class="fixed top-4 left-4 z-50 flex flex-wrap items-center gap-2 bg-amber-50/90 backdrop-blur-md p-2 rounded-2xl border-2 border-amber-800/30 shadow-xl">
+        <!-- Texture Selector -->
+        <button onclick="changeTheme('graph')" title="Graph Paper" class="px-3 py-1.5 text-xs font-typewriter bg-amber-100 hover:bg-amber-200 border border-amber-700/30 rounded-lg flex items-center gap-1 transition">
+            <span class="w-3 h-3 bg-slate-200 border border-slate-400 rounded-full inline-block"></span> Graph
+        </button>
+        <button onclick="changeTheme('kraft')" title="Kraft Paper" class="px-3 py-1.5 text-xs font-typewriter bg-amber-100 hover:bg-amber-200 border border-amber-700/30 rounded-lg flex items-center gap-1 transition">
+            <span class="w-3 h-3 bg-amber-600 rounded-full inline-block"></span> Kraft
+        </button>
+        <button onclick="changeTheme('cork')" title="Corkboard" class="px-3 py-1.5 text-xs font-typewriter bg-amber-100 hover:bg-amber-200 border border-amber-700/30 rounded-lg flex items-center gap-1 transition">
+            <span class="w-3 h-3 bg-yellow-700 rounded-full inline-block"></span> Cork
+        </button>
+        <button onclick="changeTheme('blueprint')" title="Dark Blueprint" class="px-3 py-1.5 text-xs font-typewriter bg-amber-100 hover:bg-amber-200 border border-amber-700/30 rounded-lg flex items-center gap-1 transition">
+            <span class="w-3 h-3 bg-blue-900 rounded-full inline-block"></span> Blueprint
+        </button>
+
+        <div class="h-4 w-[1px] bg-amber-800/30 my-auto"></div>
+
+        <!-- Sticker Drawer Toggle Button -->
+        <button onclick="toggleStickerBox()" class="px-3 py-1.5 text-xs font-handwriting-clean text-base font-bold bg-yellow-300 hover:bg-yellow-400 border border-amber-800/40 rounded-lg shadow flex items-center gap-1 transition animate-bounce">
+            <i data-lucide="sticker" class="w-4 h-4"></i> Sticker Box
+        </button>
+    </aside>
+
+    <div id="sticker-box" class="hidden fixed top-16 right-4 z-50 w-72 bg-amber-100/95 border-2 border-amber-900/40 rounded-2xl p-4 shadow-2xl backdrop-blur-md paper-shadow">
+        <div class="flex justify-between items-center mb-2 pb-2 border-b border-amber-800/20">
+            <h3 class="font-handwriting text-2xl font-bold text-amber-950">Sticker Album</h3>
+            <button onclick="toggleStickerBox()" class="text-amber-900 hover:text-red-600 font-bold text-xl">&times;</button>
+        </div>
+        <p class="text-xs font-typewriter text-amber-900/80 mb-3">Click any sticker below to stamp it onto your screen! Drag them around freely.</p>
+        
+        <div class="grid grid-cols-4 gap-3 text-2xl">
+            <button onclick="addSticker('⭐')" class="hover:scale-125 transition transform p-2 bg-amber-50 rounded-lg border border-amber-200">⭐</button>
+            <button onclick="addSticker('📌')" class="hover:scale-125 transition transform p-2 bg-amber-50 rounded-lg border border-amber-200">📌</button>
+            <button onclick="addSticker('🌿')" class="hover:scale-125 transition transform p-2 bg-amber-50 rounded-lg border border-amber-200">🌿</button>
+            <button onclick="addSticker('☕')" class="hover:scale-125 transition transform p-2 bg-amber-50 rounded-lg border border-amber-200">☕</button>
+            <button onclick="addSticker('🎨')" class="hover:scale-125 transition transform p-2 bg-amber-50 rounded-lg border border-amber-200">🎨</button>
+            <button onclick="addSticker('💻')" class="hover:scale-125 transition transform p-2 bg-amber-50 rounded-lg border border-amber-200">💻</button>
+            <button onclick="addSticker('✨')" class="hover:scale-125 transition transform p-2 bg-amber-50 rounded-lg border border-amber-200">✨</button>
+            <button onclick="addSticker('📸')" class="hover:scale-125 transition transform p-2 bg-amber-50 rounded-lg border border-amber-200">📸</button>
+            <button onclick="addSticker('🚀')" class="hover:scale-125 transition transform p-2 bg-amber-50 rounded-lg border border-amber-200">🚀</button>
+            <button onclick="addSticker('💡')" class="hover:scale-125 transition transform p-2 bg-amber-50 rounded-lg border border-amber-200">💡</button>
+            <button onclick="addSticker('🏷️')" class="hover:scale-125 transition transform p-2 bg-amber-50 rounded-lg border border-amber-200">🏷️</button>
+            <button onclick="addSticker('🌸')" class="hover:scale-125 transition transform p-2 bg-amber-50 rounded-lg border border-amber-200">🌸</button>
+        </div>
+        <div class="mt-3 text-right">
+            <button onclick="clearStickers()" class="text-xs text-red-700 hover:underline font-typewriter">Clear All Stamps</button>
+        </div>
+    </div>
+
+    <header class="max-w-5xl mx-auto pt-8 px-4 relative">
+        <!-- Binder Rings Graphic (Left Side) -->
+        <div class="hidden md:flex flex-col justify-between absolute -left-6 top-16 bottom-16 z-20 space-y-12">
+            <div class="binder-ring"></div>
+            <div class="binder-ring"></div>
+            <div class="binder-ring"></div>
+            <div class="binder-ring"></div>
+            <div class="binder-ring"></div>
+        </div>
+
+        <!-- Navigation Paper Tag Tabs -->
+        <nav aria-label="Main Navigation" class="flex flex-wrap justify-center md:justify-end gap-3 mb-6 relative z-10">
+            <a href="#about" class="bg-amber-100 hover:bg-yellow-200 text-amber-950 font-handwriting text-2xl px-5 py-2 rounded-t-xl border-t-2 border-x-2 border-amber-800/30 shadow-md transform hover:-translate-y-1 transition">About Me</a>
+            <a href="#gallery" class="bg-rose-100 hover:bg-rose-200 text-rose-950 font-handwriting text-2xl px-5 py-2 rounded-t-xl border-t-2 border-x-2 border-rose-800/30 shadow-md transform hover:-translate-y-1 transition">Projects</a>
+            <a href="#experience" class="bg-sky-100 hover:bg-sky-200 text-sky-950 font-handwriting text-2xl px-5 py-2 rounded-t-xl border-t-2 border-x-2 border-sky-800/30 shadow-md transform hover:-translate-y-1 transition">Memory Lane</a>
+            <a href="#contact" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-950 font-handwriting text-2xl px-5 py-2 rounded-t-xl border-t-2 border-x-2 border-emerald-800/30 shadow-md transform hover:-translate-y-1 transition">Contact</a>
+        </nav>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 pb-16 space-y-24">
+        <section id="hero" class="relative bg-amber-50/90 rounded-3xl p-6 md:p-12 border-2 border-amber-800/20 paper-shadow overflow-hidden">
+            <div class="coffee-stain absolute -bottom-8 -right-8 opacity-60 pointer-events-none"></div>
+            <div class="absolute top-4 right-12 opacity-20 pointer-events-none font-typewriter text-xs">CREATIVE JOURNAL</div>
+            
+            <div class="grid md:grid-cols-12 gap-8 items-center relative z-10">
+                <div class="md:col-span-5 flex flex-col items-center">
+                    <div class="relative group transform -rotate-3 hover:rotate-0 transition-transform duration-300">
+                        <div class="washi-tape absolute -top-4 left-1/2 -translate-x-1/2 w-28 h-7 z-20 transform -rotate-2"></div>
+                        
+                        <div class="bg-white p-4 pb-6 rounded-sm polaroid-shadow border border-slate-200 w-64 md:w-72">
+                            <div class="relative overflow-hidden bg-slate-100 rounded-sm aspect-square mb-3 border border-slate-100">
+                                <img src="images/bsit_aya.jpg" alt="Profile Snapshot" class="w-full h-full object-cover filter contrast-105 saturate-90" onerror="this.src='https://via.placeholder.com/300x300?text=Profile+Photo'">
+                                <div class="absolute top-2 right-2 border-2 border-rose-600/70 text-rose-600/80 font-typewriter text-[10px] px-1 py-0.5 rounded transform rotate-12 bg-white/80">APPROVED</div>
+                            </div>
+                            <div class="text-center">
+                                <p class="font-handwriting text-3xl text-slate-800 font-bold">Aya Mae Alpez ✨</p>
+                                <p class="font-typewriter text-xs text-slate-500">Designer & Developer with AI Tools</p>
+                            </div>
+                        </div>
+
+                        <div class="absolute -bottom-4 -right-4 bg-yellow-200 text-amber-900 font-handwriting text-lg px-3 py-1 rounded-md shadow transform rotate-6 border border-yellow-400">
+                            Hello World! 👋
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-7 space-y-4">
+                    <div class="inline-block washi-tape-mint px-4 py-1 text-xs font-typewriter font-bold text-emerald-900 transform -rotate-1 rounded-sm">
+                        WELCOME TO MY DIGITAL CRAFTBOARD
+                    </div>
+
+                    <h1 class="text-4xl md:text-6xl font-handwriting font-bold text-slate-900 leading-tight">
+                        Crafting pixel-perfect web experiences with a touch of human warmth.
+                    </h1>
+
+                    <p class="font-sans-clean text-slate-700 leading-relaxed text-sm md:text-base">
+                        Creative web designs blend logic with handmade charm.
+                    </p>
+
+                    <div class="pt-4 flex flex-wrap gap-2 items-center">
+                        <span class="font-typewriter text-xs text-slate-500 mr-2">Core Tools:</span>
+                        <span class="bg-amber-100 text-amber-900 font-handwriting-clean text-lg px-3 py-1 rounded-full border border-amber-300 shadow-sm">🎨 UI/UX Design</span>
+                        <span class="bg-sky-100 text-sky-900 font-handwriting-clean text-lg px-3 py-1 rounded-full border border-sky-300 shadow-sm">💻 React & Tailwind</span>
+                        <span class="bg-rose-100 text-rose-900 font-handwriting-clean text-lg px-3 py-1 rounded-full border border-rose-300 shadow-sm">✦ Interactive Web</span>
+                    </div>
+
+                    <div class="pt-6 flex flex-wrap items-center gap-4">
+                        <a href="#gallery" class="bg-amber-800 hover:bg-amber-900 text-amber-50 font-handwriting text-2xl px-6 py-2.5 rounded-xl shadow-lg transform hover:-translate-y-0.5 transition flex items-center gap-2">
+                            <i data-lucide="folder-open" class="w-5 h-5"></i> Browse Scrapbook
+                        </a>
+                        <a href="#contact" class="border-2 border-dashed border-amber-800/60 hover:bg-amber-100 text-amber-950 font-handwriting text-2xl px-5 py-2 rounded-xl transition flex items-center gap-2">
+                            <i data-lucide="mail" class="w-5 h-5"></i> Send Postcard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="relative">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="bg-amber-200 text-amber-950 font-handwriting text-3xl font-bold px-6 py-2 rounded-r-2xl border-l-8 border-amber-800 shadow-md">
+                    01. About Me & Journal
+                </div>
+                <div class="h-[2px] flex-grow bg-amber-800/20 border-t border-dashed border-amber-800/40"></div>
+            </div>
+
+            <div class="grid md:grid-cols-12 gap-8">
+                <div class="md:col-span-8 bg-amber-50/90 rounded-2xl p-6 md:p-8 paper-shadow border border-amber-800/20 relative torn-edge-bottom pb-12">
+                    <div class="absolute -top-3 left-10 w-4 h-10 border-2 border-slate-400 rounded-full bg-transparent shadow-sm z-20"></div>
+
+                    <h2 class="font-typewriter text-xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-4 flex items-center justify-between">
+                        <span>MY STORY SO FAR...</span>
+                        <span class="text-xs font-normal text-slate-400">ENTRY #2026-A</span>
+                    </h2>
+
+                    <div class="space-y-4 font-sans-clean text-slate-700 text-sm md:text-base leading-relaxed">
+                        <p class="first-letter:text-4xl first-letter:font-handwriting first-letter:font-bold first-letter:text-amber-800 first-letter:float-left first-letter:mr-2">
+                            I've started turning my ideas into reality this year. I love designing mobile/web apps and websites for small businesses. I work at the intersection of aesthetic design and clean frontend engineering.
+                        </p>
+                        <p>
+                            My approach is simple: make web interfaces feel personal, human, and delightfully intuitive. Whether it's building complex web apps or custom interactive experiences, I pay attention to the smallest micro-details and to the client's requests.
+                        </p>
+                    </div>
+
+                    <div class="mt-8 border-t border-dashed border-amber-800/20 pt-6">
+                        <h3 class="font-handwriting text-2xl font-bold text-amber-950 mb-3">Craft Passions & Skills:</h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                            <div class="p-2.5 bg-amber-100/70 rounded-lg border border-amber-300 flex items-center gap-2">
+                                <span class="text-xl">⚡</span>
+                                <div>
+                                    <div class="font-handwriting-clean text-base font-bold leading-tight">Frontend</div>
+                                    <div class="text-[10px] font-typewriter text-slate-500">React, JavaScript</div>
+                                </div>
+                            </div>
+                            <div class="p-2.5 bg-rose-100/70 rounded-lg border border-rose-300 flex items-center gap-2">
+                                <span class="text-xl">🎨</span>
+                                <div>
+                                    <div class="font-handwriting-clean text-base font-bold leading-tight">UI/UX Design</div>
+                                    <div class="text-[10px] font-typewriter text-slate-500">Figma, Design Systems</div>
+                                </div>
+                            </div>
+                            <div class="p-2.5 bg-sky-100/70 rounded-lg border border-sky-300 flex items-center gap-2">
+                                <span class="text-xl">📦</span>
+                                <div>
+                                    <div class="font-handwriting-clean text-base font-bold leading-tight">Styling</div>
+                                    <div class="text-[10px] font-typewriter text-slate-500">Tailwind, CSS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-4 space-y-6 flex flex-col justify-between">
+                    <div class="bg-yellow-200/90 text-amber-950 p-5 rounded-sm shadow-md transform rotate-2 relative border border-yellow-300">
+                        <div class="absolute -top-3 left-1/2 -translate-x-1/2 text-rose-600 text-xl font-bold">📌</div>
+                        <h3 class="font-handwriting text-2xl font-bold mb-2">Fun Facts!</h3>
+                        <ul class="font-handwriting-clean text-lg space-y-1 list-disc list-inside">
+                            <li>Fueled by 🍔 burger, 🍟 fries & 🥤 iced mocha</li>
+                            <li>Collects skins for heroes in MLBB 😂</li>
+                            <li>Passionate about craft paper art</li>
+                            <li>Loves to watch SpongeBob SquarePants</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-emerald-100/90 text-emerald-950 p-5 rounded-sm shadow-md transform -rotate-2 relative border border-emerald-300">
+                        <div class="washi-tape-mint absolute -top-3 right-4 w-20 h-6"></div>
+                        <h3 class="font-handwriting text-2xl font-bold mb-1">Quick Status</h3>
+                        <p class="font-typewriter text-xs text-emerald-800 leading-tight">
+                            🟢 Available for freelance projects & creative collaborations.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="relative">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="bg-rose-200 text-rose-950 font-handwriting text-3xl font-bold px-6 py-2 rounded-r-2xl border-l-8 border-rose-800 shadow-md">
+                    02. Scrapbook Showcase
+                </div>
+                <div class="h-[2px] flex-grow bg-rose-800/20 border-t border-dashed border-rose-800/40"></div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-center gap-2 mb-8 font-handwriting text-xl">
+                <button onclick="filterProjects('all')" class="project-filter-btn active bg-amber-200 text-amber-950 px-4 py-1.5 rounded-full border border-amber-800/30 shadow-sm">All Clippings</button>
+                <button onclick="filterProjects('web')" class="project-filter-btn bg-amber-50 text-amber-900 px-4 py-1.5 rounded-full border border-amber-800/20 shadow-sm">Web/Mobile Apps</button>
+                <button onclick="filterProjects('design')" class="project-filter-btn bg-amber-50 text-amber-900 px-4 py-1.5 rounded-full border border-amber-800/20 shadow-sm">UI/UX Design</button>
+                <button onclick="filterProjects('creative')" class="project-filter-btn bg-amber-50 text-amber-900 px-4 py-1.5 rounded-full border border-amber-800/20 shadow-sm">Digital Products</button>
+            </div>
+
+            <div id="projects-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <div class="project-card web transform hover:-translate-y-2 hover:rotate-1 transition duration-300 cursor-pointer" onclick="openProjectModal('proj-1')">
+                    <div class="bg-white p-4 pb-6 rounded-sm polaroid-shadow border border-slate-200 relative">
+                        <div class="washi-tape absolute -top-3 left-6 w-24 h-6 z-10"></div>
+                        <div class="aspect-video bg-slate-100 mb-3 overflow-hidden rounded-sm relative">
+                            <img src="images/gravnav.png" alt="Gravesite Navigator" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400x250?text=Gravesite+Navigator'">
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-handwriting text-2xl font-bold text-slate-800">Gravesite Navigator App</h3>
+                                <p class="font-typewriter text-xs text-slate-500">React • GPS</p>
+                            </div>
+                            <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-typewriter">App</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card design transform hover:-translate-y-2 hover:-rotate-1 transition duration-300 cursor-pointer" onclick="openProjectModal('proj-2')">
+                    <div class="bg-white p-4 pb-6 rounded-sm polaroid-shadow border border-slate-200 relative">
+                        <div class="washi-tape-pink absolute -top-3 right-6 w-24 h-6 z-10"></div>
+                        <div class="aspect-video bg-slate-100 mb-3 overflow-hidden rounded-sm relative">
+                            <img src="images/app_design.png" alt="Figma Design" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400x250?text=Mobile+App+Design'">
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-handwriting text-2xl font-bold text-slate-800">Mobile App Prototyping</h3>
+                                <p class="font-typewriter text-xs text-slate-500">Figma • UI Kit</p>
+                            </div>
+                            <span class="text-xs bg-rose-100 text-rose-800 px-2 py-0.5 rounded font-typewriter">Design</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card creative transform hover:-translate-y-2 hover:rotate-2 transition duration-300 cursor-pointer" onclick="openProjectModal('proj-3')">
+                    <div class="bg-white p-4 pb-6 rounded-sm polaroid-shadow border border-slate-200 relative">
+                        <div class="washi-tape-mint absolute -top-3 left-1/3 w-24 h-6 z-10"></div>
+                        <div class="aspect-video bg-slate-100 mb-3 overflow-hidden rounded-sm relative">
+                            <img src="images/web_design.png" alt="Website" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400x250?text=Creative+Website'">
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-handwriting text-2xl font-bold text-slate-800">Business Website</h3>
+                                <p class="font-typewriter text-xs text-slate-500">Wordpress • CSS/HTML</p>
+                            </div>
+                            <span class="text-xs bg-sky-100 text-sky-800 px-2 py-0.5 rounded font-typewriter">Creative</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card web transform hover:-translate-y-2 hover:-rotate-2 transition duration-300 cursor-pointer" onclick="openProjectModal('proj-4')">
+                    <div class="bg-white p-4 pb-6 rounded-sm polaroid-shadow border border-slate-200 relative">
+                        <div class="washi-tape absolute -top-3 right-8 w-24 h-6 z-10"></div>
+                        <div class="aspect-video bg-slate-100 mb-3 overflow-hidden rounded-sm relative">
+                            <img src="images/internalsystem.png" alt="Internal System" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400x250?text=Internal+System'">
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-handwriting text-2xl font-bold text-slate-800">Internal System</h3>
+                                <p class="font-typewriter text-xs text-slate-500">Dashboard • Enterprise</p>
+                            </div>
+                            <span class="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-typewriter">System</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="experience" class="relative">
+            <div class="flex items-center gap-3 mb-10">
+                <div class="bg-sky-200 text-sky-950 font-handwriting text-3xl font-bold px-6 py-2 rounded-r-2xl border-l-8 border-sky-800 shadow-md">
+                    03. Memory Lane Timeline
+                </div>
+                <div class="h-[2px] flex-grow bg-sky-800/20 border-t border-dashed border-sky-800/40"></div>
+            </div>
+
+            <div class="relative pl-6 md:pl-10 border-l-2 border-dashed border-amber-800/50 space-y-10">
+                
+                <div class="relative">
+                    <div class="absolute -left-[31px] top-1.5 w-4 h-4 bg-red-500 rounded-full border-2 border-white shadow-md"></div>
+                    <div class="bg-amber-50/90 p-5 rounded-2xl paper-shadow border border-amber-800/20 transform hover:scale-[1.01] transition">
+                        <span class="font-typewriter text-xs bg-amber-200 text-amber-900 px-2 py-0.5 rounded">PRESENT</span>
+                        <h3 class="font-handwriting text-2xl font-bold text-slate-800 mt-1">Internal System and Web Builder</h3>
+                        <p class="font-sans-clean text-xs text-slate-600 mt-1">Designed and developed interactive websites and all-in-one internal systems for THEMIS Enterprise Inc.</p>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div class="absolute -left-[31px] top-1.5 w-4 h-4 bg-yellow-500 rounded-full border-2 border-white shadow-md"></div>
+                    <div class="bg-amber-50/90 p-5 rounded-2xl paper-shadow border border-amber-800/20 transform hover:scale-[1.01] transition">
+                        <span class="font-typewriter text-xs bg-yellow-200 text-yellow-900 px-2 py-0.5 rounded">FREELANCE</span>
+                        <h3 class="font-handwriting text-2xl font-bold text-slate-800 mt-1">UI/UX Designer & Frontend Developer</h3>
+                        <p class="font-sans-clean text-xs text-slate-600 mt-1">Crafting tailored mobile app interfaces, web designs, and custom digital graphics for clients.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Contact Postcard Section -->
+        <section id="contact" class="relative">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="bg-emerald-200 text-emerald-950 font-handwriting text-3xl font-bold px-6 py-2 rounded-r-2xl border-l-8 border-emerald-800 shadow-md">
+                    04. Send Me a Postcard
+                </div>
+                <div class="h-[2px] flex-grow bg-emerald-800/20 border-t border-dashed border-emerald-800/40"></div>
+            </div>
+
+            <div class="bg-amber-50/90 rounded-3xl p-6 md:p-10 border-2 border-amber-800/20 paper-shadow relative overflow-hidden">
+                <div class="washi-tape-pink absolute -top-4 left-1/2 -translate-x-1/2 w-32 h-8"></div>
+
+                <form action="https://api.web3forms.com/submit" method="POST" class="grid md:grid-cols-12 gap-8 items-start">
+                    <!-- Replace YOUR_ACCESS_KEY_HERE with your key from web3forms.com -->
+                    <input type="hidden" name="access_key" value="33ec6ab4-d80b-442c-8e85-4b639462319d">
+
+                    <div class="md:col-span-7 space-y-4">
+                        <div>
+                            <label class="block font-typewriter text-xs text-amber-900 mb-1">YOUR NAME</label>
+                            <input type="text" name="name" required placeholder="Jane Doe" class="w-full bg-white/80 border-b-2 border-dashed border-amber-800/40 p-2 font-handwriting text-xl text-slate-800 focus:outline-none focus:border-amber-800">
+                        </div>
+
+                        <div>
+                            <label class="block font-typewriter text-xs text-amber-900 mb-1">YOUR EMAIL</label>
+                            <input type="email" name="email" required placeholder="jane@example.com" class="w-full bg-white/80 border-b-2 border-dashed border-amber-800/40 p-2 font-handwriting text-xl text-slate-800 focus:outline-none focus:border-amber-800">
+                        </div>
+
+                        <div>
+                            <label class="block font-typewriter text-xs text-amber-900 mb-1">YOUR MESSAGE</label>
+                            <textarea name="message" rows="4" required placeholder="Hi Aya, I loved your portfolio! Let's talk about..." class="w-full bg-white/80 border-2 border-dashed border-amber-800/30 p-3 font-handwriting text-xl text-slate-800 rounded-xl focus:outline-none focus:border-amber-800"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-handwriting text-2xl py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                            <i data-lucide="send" class="w-5 h-5"></i> Mail Postcard Now
+                        </button>
+                    </div>
+
+                    <div class="md:col-span-5 flex flex-col items-center justify-center h-full border-t md:border-t-0 md:border-l border-dashed border-amber-800/30 pt-6 md:pt-0 md:pl-8">
+                        <div class="w-24 h-28 border-2 border-dashed border-rose-800/60 p-2 flex flex-col items-center justify-center text-center bg-rose-50/50 rounded-lg transform rotate-3 mb-6">
+                            <span class="text-3xl">📮</span>
+                            <span class="font-typewriter text-[10px] text-rose-900 mt-1">AIR MAIL</span>
+                        </div>
+
+                        <div class="text-center font-handwriting text-xl text-amber-950 space-y-2">
+                            <p>Direct Email:</p>
+                            <p class="font-typewriter text-sm text-slate-700 select-all">alpezayamae@gmail.com</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Project Details -->
+    <div id="project-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-amber-50 rounded-3xl max-w-2xl w-full p-6 border-2 border-amber-900/40 paper-shadow relative transform animate-in fade-in zoom-in duration-200">
+            <button onclick="closeProjectModal()" class="absolute top-4 right-4 text-amber-950 hover:text-red-600 font-bold text-2xl">&times;</button>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        lucide.createIcons();
+
+        function changeTheme(theme) {
+            const body = document.getElementById('body-root');
+            body.className = body.className.replace(/bg-\S+/g, '');
+            if (theme === 'graph') body.classList.add('bg-graph-paper');
+            if (theme === 'kraft') body.classList.add('bg-kraft');
+            if (theme === 'cork') body.classList.add('bg-corkboard');
+            if (theme === 'blueprint') body.classList.add('bg-dark-blueprint');
+        }
+
+        function toggleStickerBox() {
+            const box = document.getElementById('sticker-box');
+            box.classList.toggle('hidden');
+        }
+
+        function addSticker(emoji) {
+            const canvas = document.getElementById('sticker-canvas');
+            const sticker = document.createElement('div');
+            sticker.className = 'placed-sticker text-4xl';
+            sticker.innerText = emoji;
+            
+            const x = Math.random() * (window.innerWidth - 100) + 20;
+            const y = Math.random() * (window.innerHeight - 100) + 20;
+            sticker.style.left = x + 'px';
+            sticker.style.top = y + 'px';
+
+            makeDraggable(sticker);
+            canvas.appendChild(sticker);
+        }
+
+        function clearStickers() {
+            document.getElementById('sticker-canvas').innerHTML = '';
+        }
+
+        function makeDraggable(element) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            element.onmousedown = dragMouseDown;
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                element.style.top = (element.offsetTop - pos2) + "px";
+                element.style.left = (element.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+
+        function filterProjects(category) {
+            const cards = document.querySelectorAll('.project-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.classList.contains(category)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        const projectData = {
+            'proj-1': { title: 'Gravesite Navigator App', desc: 'A mobile navigation application built with React to help users easily locate gravesites using GPS mapping.', img: 'images/gravnav.png' },
+            'proj-2': { title: 'Mobile App Prototyping', desc: 'Interactive UI/UX design mockups and prototypes built in Figma for modern mobile platforms.', img: 'images/app_design.png' },
+            'proj-3': { title: 'Business Website', desc: 'Custom creative website built using standard web technologies with interactive frontend features.', img: 'images/web_design.png' },
+            'proj-4': { title: 'Internal System', desc: 'An enterprise web application built for operational management and automated tracking.', img: 'images/internalsystem.png' }
+        };
+
+        function openProjectModal(id) {
+            const data = projectData[id];
+            if (!data) return;
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <h3 class="font-handwriting text-3xl font-bold text-slate-800 mb-2">${data.title}</h3>
+                <img src="${data.img}" class="w-full rounded-lg mb-4 max-h-64 object-cover" onerror="this.src='https://via.placeholder.com/500x300?text=Project+Preview'">
+                <p class="font-sans-clean text-slate-700 text-sm mb-4">${data.desc}</p>
+                <div class="text-right">
+                    <button onclick="closeProjectModal()" class="bg-amber-800 text-white font-handwriting text-xl px-4 py-1.5 rounded-lg">Close Clipping</button>
+                </div>
+            `;
+            document.getElementById('project-modal').classList.remove('hidden');
+        }
+
+        function closeProjectModal() {
+            document.getElementById('project-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
